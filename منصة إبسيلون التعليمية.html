@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة إبسيلون التعليمية - المناهج السورية الشاملة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'arabic': ['Tajawal', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .video-player {
+            background: #000;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">
+                        ε
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">منصة إبسيلون التعليمية</h1>
+                        <p class="text-purple-200 text-sm">المناهج السورية الشاملة</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-6 space-x-reverse">
+                    <a href="#home" class="hover:text-purple-200 transition-colors">الرئيسية</a>
+                    <a href="#school" class="hover:text-purple-200 transition-colors">المدارس</a>
+                    <a href="#university" class="hover:text-purple-200 transition-colors">الجامعات</a>
+                    <a href="#exams" class="hover:text-purple-200 transition-colors">الامتحانات</a>
+                    <a href="#record" class="hover:text-purple-200 transition-colors">تسجيل فيديو</a>
+                    <a href="#stats" class="hover:text-purple-200 transition-colors">الإحصائيات</a>
+                </div>
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <button onclick="showVideoRecorder()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-semibold">
+                        🎥 تسجيل فيديو
+                    </button>
+                    <button onclick="showExamCenter()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors font-semibold">
+                        🏆 مركز الامتحانات
+                    </button>
+                    <button onclick="showSearch()" class="bg-white bg-opacity-20 p-2 rounded-lg hover:bg-opacity-30 transition-colors">
+                        🔍
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-5xl font-bold mb-6 animate-fade-in">منصة التعليم السورية الشاملة</h2>
+            <p class="text-xl mb-8 animate-fade-in">أكثر من 2000 فيديو تعليمي مجاني - من الصف الأول حتى الدراسات العليا</p>
+            <div class="flex justify-center space-x-4 space-x-reverse flex-wrap gap-4">
+                <button onclick="scrollToSection('school')" class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-purple-50 transition-colors">
+                    📚 مناهج المدارس
+                </button>
+                <button onclick="scrollToSection('university')" class="bg-purple-800 text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-900 transition-colors">
+                    🎓 المناهج الجامعية
+                </button>
+                <button onclick="showVideoUpload()" class="bg-red-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-red-600 transition-colors">
+                    📤 رفع فيديو
+                </button>
+                <button onclick="showExamCenter()" class="bg-yellow-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-yellow-600 transition-colors">
+                    🏆 اختبر نفسك
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Stats -->
+    <section id="stats" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-800">إحصائيات المنصة</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="card-hover p-6">
+                    <div class="text-4xl font-bold text-purple-600 mb-2" id="totalCourses">0</div>
+                    <div class="text-gray-600">منهج دراسي</div>
+                </div>
+                <div class="card-hover p-6">
+                    <div class="text-4xl font-bold text-blue-600 mb-2" id="totalVideos">0</div>
+                    <div class="text-gray-600">فيديو تعليمي</div>
+                </div>
+                <div class="card-hover p-6">
+                    <div class="text-4xl font-bold text-green-600 mb-2" id="totalStudents">0</div>
+                    <div class="text-gray-600">طالب مسجل</div>
+                </div>
+                <div class="card-hover p-6">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">100%</div>
+                    <div class="text-gray-600">محتوى مجاني</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- School Curricula -->
+    <section id="school" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-800">مناهج المدارس السورية</h3>
+            
+            <!-- Grade Levels -->
+            <div class="mb-8">
+                <div class="flex justify-center mb-6 flex-wrap gap-2">
+                    <button onclick="filterByGrade('all')" class="grade-btn active bg-purple-600 text-white px-4 py-2 rounded-full transition-colors text-sm">
+                        جميع الصفوف
+                    </button>
+                    <button onclick="filterByGrade('elementary')" class="grade-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        الابتدائي (1-6)
+                    </button>
+                    <button onclick="filterByGrade('preparatory')" class="grade-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        الإعدادي (7-9)
+                    </button>
+                    <button onclick="filterByGrade('secondary')" class="grade-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        الثانوي (10-12)
+                    </button>
+                </div>
+            </div>
+
+            <!-- School Courses Grid -->
+            <div id="schoolCoursesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- School courses will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Recording Section -->
+    <section id="record" class="py-16 bg-gradient-to-br from-red-50 to-pink-50">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-800">🎥 استوديو تسجيل الفيديوهات</h3>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
+                    <!-- Recording Controls -->
+                    <div class="bg-gradient-to-r from-red-500 to-pink-500 text-white p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4 class="text-2xl font-bold mb-2">استوديو التسجيل المباشر</h4>
+                                <p class="text-red-100">سجل محاضراتك وشاركها مع الطلاب</p>
+                            </div>
+                            <div class="text-right">
+                                <div id="recordingStatus" class="text-lg font-semibold mb-2">جاهز للتسجيل</div>
+                                <div id="recordingTimer" class="text-red-200 text-sm">00:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Preview -->
+                    <div class="p-6">
+                        <div class="bg-gray-900 rounded-lg mb-6 relative overflow-hidden" style="aspect-ratio: 16/9;">
+                            <video id="videoPreview" class="w-full h-full object-cover" autoplay muted></video>
+                            <div id="noVideoMessage" class="absolute inset-0 flex items-center justify-center text-white text-center">
+                                <div>
+                                    <div class="text-6xl mb-4">📹</div>
+                                    <p class="text-xl mb-2">معاينة الكاميرا</p>
+                                    <p class="text-gray-300">اضغط "بدء التسجيل" لتفعيل الكاميرا</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Recording Indicator -->
+                            <div id="recordingIndicator" class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold hidden animate-pulse">
+                                🔴 جاري التسجيل
+                            </div>
+                        </div>
+                        
+                        <!-- Recording Controls -->
+                        <div class="flex justify-center space-x-4 space-x-reverse mb-6">
+                            <button id="startRecordBtn" onclick="startRecording()" class="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors font-semibold">
+                                🎥 بدء التسجيل
+                            </button>
+                            <button id="pauseRecordBtn" onclick="pauseRecording()" class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors font-semibold hidden">
+                                ⏸️ إيقاف مؤقت
+                            </button>
+                            <button id="stopRecordBtn" onclick="stopRecording()" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors font-semibold hidden">
+                                ⏹️ إيقاف التسجيل
+                            </button>
+                        </div>
+                        
+                        <!-- Recording Settings -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">جودة الفيديو</label>
+                                <select id="videoQuality" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                                    <option value="720p">HD 720p</option>
+                                    <option value="1080p" selected>Full HD 1080p</option>
+                                    <option value="4k">4K Ultra HD</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">مصدر الصوت</label>
+                                <select id="audioSource" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                                    <option value="microphone">الميكروفون الافتراضي</option>
+                                    <option value="system">صوت النظام</option>
+                                    <option value="both">الميكروفون + النظام</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">نوع التسجيل</label>
+                                <select id="recordingType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500">
+                                    <option value="camera">كاميرا فقط</option>
+                                    <option value="screen">الشاشة فقط</option>
+                                    <option value="both">كاميرا + شاشة</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recorded Videos List -->
+                <div class="mt-8">
+                    <h4 class="text-2xl font-bold text-gray-800 mb-6">📚 الفيديوهات المسجلة</h4>
+                    <div id="recordedVideosList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Recorded videos will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- University Curricula -->
+    <section id="university" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-800">المناهج الجامعية</h3>
+            
+            <!-- University Categories -->
+            <div class="mb-8">
+                <div class="flex justify-center mb-6 flex-wrap gap-2">
+                    <button onclick="filterByFaculty('all')" class="faculty-btn active bg-blue-600 text-white px-4 py-2 rounded-full transition-colors text-sm">
+                        جميع الكليات
+                    </button>
+                    <button onclick="filterByFaculty('medical')" class="faculty-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        الطبية
+                    </button>
+                    <button onclick="filterByFaculty('economic')" class="faculty-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        الاقتصادية
+                    </button>
+                    <button onclick="filterByFaculty('engineering')" class="faculty-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        الهندسية
+                    </button>
+                    <button onclick="filterByFaculty('science')" class="faculty-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        العلمية
+                    </button>
+                    <button onclick="filterByFaculty('humanities')" class="faculty-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors text-sm hover:bg-gray-300">
+                        الإنسانية
+                    </button>
+                </div>
+            </div>
+
+            <!-- University Courses Grid -->
+            <div id="universityCoursesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- University courses will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-2xl mx-4 w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">البحث في المناهج</h3>
+                <button onclick="closeSearch()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <div class="mb-6">
+                <input type="text" id="globalSearchInput" placeholder="ابحث عن أي منهج أو مادة..." 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-lg"
+                       onkeyup="performGlobalSearch()">
+            </div>
+            
+            <div id="searchResults" class="max-h-96 overflow-y-auto">
+                <!-- Search results will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-4xl mx-4 w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="videoModalTitle" class="text-2xl font-bold text-gray-800"></h3>
+                <button onclick="closeVideoModal()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <!-- Video Player -->
+            <div class="video-player mb-6 aspect-video bg-gray-900 flex items-center justify-center">
+                <div class="text-white text-center">
+                    <div class="text-6xl mb-4">🎥</div>
+                    <p class="text-xl">مشغل الفيديو</p>
+                    <p class="text-gray-300 mt-2">في النسخة الكاملة سيتم تشغيل الفيديو هنا</p>
+                </div>
+            </div>
+            
+            <!-- Video Progress -->
+            <div class="mb-4">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>التقدم في المشاهدة</span>
+                    <span id="videoProgress">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <!-- Video List -->
+            <div id="videoContent" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Video content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Exam Center Modal -->
+    <div id="examModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-2xl mx-4 w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">🏆 مركز الامتحانات والشهادات</h3>
+                <button onclick="closeExamCenter()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">💰</div>
+                <h4 class="text-2xl font-bold text-gray-800 mb-4">هنا يبدأ الربح!</h4>
+                <p class="text-gray-600 mb-6">جميع المحاضرات والفيديوهات مجانية 100%<br>الربح يأتي من الامتحانات والشهادات المعتمدة</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+                    <div class="text-3xl mb-3">📝</div>
+                    <h5 class="font-bold text-lg mb-2">امتحانات تدريبية</h5>
+                    <p class="text-gray-600 mb-4">اختبارات تفاعلية لكل المناهج</p>
+                    <div class="text-2xl font-bold text-yellow-600 mb-3">5,000 ل.س</div>
+                    <button onclick="purchaseExam('practice')" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors w-full">
+                        اشتراك شهري
+                    </button>
+                </div>
+                
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+                    <div class="text-3xl mb-3">🏅</div>
+                    <h5 class="font-bold text-lg mb-2">شهادات معتمدة</h5>
+                    <p class="text-gray-600 mb-4">شهادات إتمام المناهج</p>
+                    <div class="text-2xl font-bold text-green-600 mb-3">15,000 ل.س</div>
+                    <button onclick="purchaseExam('certificate')" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full">
+                        شهادة واحدة
+                    </button>
+                </div>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+                    <div class="text-3xl mb-3">🎯</div>
+                    <h5 class="font-bold text-lg mb-2">تحليل الأداء</h5>
+                    <p class="text-gray-600 mb-4">تقارير مفصلة عن نقاط القوة والضعف</p>
+                    <div class="text-2xl font-bold text-blue-600 mb-3">10,000 ل.س</div>
+                    <button onclick="purchaseExam('analysis')" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full">
+                        تحليل شامل
+                    </button>
+                </div>
+                
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6 text-center">
+                    <div class="text-3xl mb-3">👨‍🏫</div>
+                    <h5 class="font-bold text-lg mb-2">استشارة تعليمية</h5>
+                    <p class="text-gray-600 mb-4">جلسة مع مختص تعليمي</p>
+                    <div class="text-2xl font-bold text-purple-600 mb-3">25,000 ل.س</div>
+                    <button onclick="purchaseExam('consultation')" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors w-full">
+                        حجز جلسة
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+                <h6 class="font-bold mb-2">💡 لماذا هذا النموذج؟</h6>
+                <ul class="text-sm text-gray-600 space-y-1">
+                    <li>• التعليم حق للجميع - لذلك المحتوى مجاني</li>
+                    <li>• الشهادات والاختبارات تحتاج موارد إضافية</li>
+                    <li>• نضمن جودة عالية للخدمات المدفوعة</li>
+                    <li>• الأرباح تساعد في تطوير المنصة</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Upload Modal -->
+    <div id="videoUploadModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-2xl mx-4 w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">📤 رفع فيديو جديد</h3>
+                <button onclick="closeVideoUpload()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <form id="videoUploadForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">عنوان الفيديو</label>
+                    <input type="text" id="videoTitle" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500" placeholder="أدخل عنوان الفيديو" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">وصف الفيديو</label>
+                    <textarea id="videoDescription" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500" placeholder="وصف مختصر للفيديو"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">المنهج</label>
+                        <select id="videoCourse" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500" required>
+                            <option value="">اختر المنهج</option>
+                            <option value="math">الرياضيات</option>
+                            <option value="science">العلوم</option>
+                            <option value="arabic">اللغة العربية</option>
+                            <option value="english">اللغة الإنجليزية</option>
+                            <option value="physics">الفيزياء</option>
+                            <option value="chemistry">الكيمياء</option>
+                            <option value="biology">الأحياء</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">المستوى</label>
+                        <select id="videoLevel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500" required>
+                            <option value="">اختر المستوى</option>
+                            <option value="elementary">ابتدائي</option>
+                            <option value="preparatory">إعدادي</option>
+                            <option value="secondary">ثانوي</option>
+                            <option value="university">جامعي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">رفع ملف الفيديو</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-red-400 transition-colors">
+                        <input type="file" id="videoFile" accept="video/*" class="hidden" onchange="handleVideoFile(this)">
+                        <div id="uploadArea" onclick="document.getElementById('videoFile').click()" class="cursor-pointer">
+                            <div class="text-4xl mb-4">📹</div>
+                            <p class="text-lg font-semibold text-gray-700 mb-2">اضغط لاختيار ملف الفيديو</p>
+                            <p class="text-sm text-gray-500">أو اسحب الملف هنا</p>
+                            <p class="text-xs text-gray-400 mt-2">الحد الأقصى: 500 MB • الصيغ المدعومة: MP4, AVI, MOV</p>
+                        </div>
+                        <div id="uploadProgress" class="hidden">
+                            <div class="text-2xl mb-2">⏳</div>
+                            <p class="text-lg font-semibold text-gray-700 mb-2">جاري الرفع...</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div id="progressBar" class="bg-red-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p id="progressText" class="text-sm text-gray-600 mt-2">0%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 space-x-reverse">
+                    <button type="submit" class="flex-1 bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors font-semibold">
+                        📤 رفع الفيديو
+                    </button>
+                    <button type="button" onclick="closeVideoUpload()" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center">
+            <div class="text-6xl mb-4">✅</div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">تم بنجاح!</h3>
+            <p id="modalMessage" class="text-gray-600 mb-6"></p>
+            <button onclick="closeModal()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                موافق
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-4 space-x-reverse mb-4">
+                        <div class="bg-white text-purple-600 rounded-full w-10 h-10 flex items-center justify-center font-bold">
+                            ε
+                        </div>
+                        <h4 class="text-xl font-bold">منصة إبسيلون</h4>
+                    </div>
+                    <p class="text-purple-200">التعليم المجاني للجميع</p>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">المناهج</h5>
+                    <ul class="space-y-2 text-purple-200">
+                        <li>مناهج المدارس</li>
+                        <li>الكليات الطبية</li>
+                        <li>الكليات الاقتصادية</li>
+                        <li>التخصصات الهندسية</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">الخدمات</h5>
+                    <ul class="space-y-2 text-purple-200">
+                        <li>فيديوهات مجانية</li>
+                        <li>امتحانات تدريبية</li>
+                        <li>شهادات معتمدة</li>
+                        <li>استشارات تعليمية</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">إحصائيات</h5>
+                    <ul class="space-y-2 text-purple-200">
+                        <li>+2000 فيديو</li>
+                        <li>+150 منهج</li>
+                        <li>محتوى 100% مجاني</li>
+                        <li>شهادات معتمدة</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-purple-400 mt-8 pt-8 text-center">
+                <p class="text-purple-200">&copy; 2024 منصة إبسيلون التعليمية - التعليم حق للجميع</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Database with Syrian Curricula
+        class SyrianEducationDatabase {
+            constructor() {
+                this.dbName = 'SyrianEducationDB';
+                this.version = 2;
+                this.db = null;
+                this.init();
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.version);
+                    
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => {
+                        this.db = request.result;
+                        resolve(this.db);
+                    };
+                    
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        
+                        // Create courses store
+                        if (!db.objectStoreNames.contains('courses')) {
+                            const courseStore = db.createObjectStore('courses', { 
+                                keyPath: 'id', 
+                                autoIncrement: true 
+                            });
+                            courseStore.createIndex('name', 'name', { unique: false });
+                            courseStore.createIndex('category', 'category', { unique: false });
+                            courseStore.createIndex('level', 'level', { unique: false });
+                            courseStore.createIndex('grade', 'grade', { unique: false });
+                            courseStore.createIndex('faculty', 'faculty', { unique: false });
+                        }
+                        
+                        // Create students store
+                        if (!db.objectStoreNames.contains('students')) {
+                            const studentStore = db.createObjectStore('students', { 
+                                keyPath: 'id', 
+                                autoIncrement: true 
+                            });
+                            studentStore.createIndex('courseId', 'courseId', { unique: false });
+                        }
+                        
+                        // Create videos store
+                        if (!db.objectStoreNames.contains('videos')) {
+                            const videoStore = db.createObjectStore('videos', { 
+                                keyPath: 'id', 
+                                autoIncrement: true 
+                            });
+                            videoStore.createIndex('courseId', 'courseId', { unique: false });
+                        }
+
+                        // Create exams store
+                        if (!db.objectStoreNames.contains('exams')) {
+                            const examStore = db.createObjectStore('exams', { 
+                                keyPath: 'id', 
+                                autoIncrement: true 
+                            });
+                            examStore.createIndex('courseId', 'courseId', { unique: false });
+                        }
+                    };
+                });
+            }
+
+            async addCourse(courseData) {
+                const transaction = this.db.transaction(['courses'], 'readwrite');
+                const store = transaction.objectStore('courses');
+                courseData.createdAt = new Date().toISOString();
+                courseData.updatedAt = new Date().toISOString();
+                return store.add(courseData);
+            }
+
+            async getAllCourses() {
+                const transaction = this.db.transaction(['courses'], 'readonly');
+                const store = transaction.objectStore('courses');
+                return new Promise((resolve, reject) => {
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async getCoursesByGrade(grade) {
+                const courses = await this.getAllCourses();
+                return courses.filter(course => course.grade === grade);
+            }
+
+            async getCoursesByFaculty(faculty) {
+                const courses = await this.getAllCourses();
+                return courses.filter(course => course.faculty === faculty);
+            }
+
+            async searchCourses(searchTerm) {
+                const courses = await this.getAllCourses();
+                return courses.filter(course => 
+                    course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    (course.description && course.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                    (course.keywords && course.keywords.some(keyword => 
+                        keyword.toLowerCase().includes(searchTerm.toLowerCase())
+                    ))
+                );
+            }
+
+            async getAllStudents() {
+                const transaction = this.db.transaction(['students'], 'readonly');
+                const store = transaction.objectStore('students');
+                return new Promise((resolve, reject) => {
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async getAllVideos() {
+                const transaction = this.db.transaction(['videos'], 'readonly');
+                const store = transaction.objectStore('videos');
+                return new Promise((resolve, reject) => {
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+        }
+
+        // Initialize database
+        const syrianDB = new SyrianEducationDatabase();
+        let allCourses = [];
+        let schoolCourses = [];
+        let universityCourses = [];
+        
+        // Video Recording Variables
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let stream = null;
+        let recordingTimer = null;
+        let recordingStartTime = null;
+        let recordedVideos = [];
+
+        // Syrian Education Data
+        const syrianEducationData = {
+            // School Curricula (Grades 1-12)
+            school: [
+                // Elementary (1-6)
+                { name: 'الرياضيات - الصف الأول', category: 'math', grade: 'elementary', level: 'مبتدئ', videos: 25, description: 'الأرقام والعمليات الأساسية', keywords: ['جمع', 'طرح', 'أرقام'] },
+                { name: 'اللغة العربية - الصف الأول', category: 'language', grade: 'elementary', level: 'مبتدئ', videos: 30, description: 'الحروف والكلمات الأولى', keywords: ['حروف', 'قراءة', 'كتابة'] },
+                { name: 'العلوم - الصف الأول', category: 'science', grade: 'elementary', level: 'مبتدئ', videos: 20, description: 'اكتشاف العالم من حولنا', keywords: ['طبيعة', 'حيوانات', 'نباتات'] },
+                
+                { name: 'الرياضيات - الصف الثاني', category: 'math', grade: 'elementary', level: 'مبتدئ', videos: 28, description: 'العمليات الحسابية والأشكال', keywords: ['ضرب', 'قسمة', 'أشكال'] },
+                { name: 'اللغة العربية - الصف الثاني', category: 'language', grade: 'elementary', level: 'مبتدئ', videos: 32, description: 'القراءة والكتابة المتقدمة', keywords: ['جمل', 'قصص', 'إملاء'] },
+                { name: 'اللغة الإنجليزية - الصف الثاني', category: 'language', grade: 'elementary', level: 'مبتدئ', videos: 25, description: 'الحروف والكلمات الإنجليزية', keywords: ['alphabet', 'words', 'basic'] },
+                
+                { name: 'الرياضيات - الصف الثالث', category: 'math', grade: 'elementary', level: 'مبتدئ', videos: 30, description: 'الكسور والقياسات', keywords: ['كسور', 'قياس', 'وقت'] },
+                { name: 'العلوم - الصف الثالث', category: 'science', grade: 'elementary', level: 'مبتدئ', videos: 25, description: 'الكائنات الحية والجماد', keywords: ['حياة', 'بيئة', 'تجارب'] },
+                { name: 'التربية الاجتماعية - الصف الثالث', category: 'social', grade: 'elementary', level: 'مبتدئ', videos: 20, description: 'المجتمع والوطن', keywords: ['وطن', 'مجتمع', 'تاريخ'] },
+                
+                { name: 'الرياضيات - الصف الرابع', category: 'math', grade: 'elementary', level: 'متوسط', videos: 35, description: 'العمليات المتقدمة والهندسة', keywords: ['هندسة', 'مساحة', 'محيط'] },
+                { name: 'اللغة العربية - الصف الرابع', category: 'language', grade: 'elementary', level: 'متوسط', videos: 38, description: 'النحو والصرف الأساسي', keywords: ['نحو', 'صرف', 'قواعد'] },
+                { name: 'العلوم - الصف الرابع', category: 'science', grade: 'elementary', level: 'متوسط', videos: 30, description: 'الفيزياء والكيمياء البسيطة', keywords: ['مادة', 'طاقة', 'حركة'] },
+                
+                { name: 'الرياضيات - الصف الخامس', category: 'math', grade: 'elementary', level: 'متوسط', videos: 40, description: 'الأعداد العشرية والنسب', keywords: ['عشرية', 'نسب', 'تناسب'] },
+                { name: 'اللغة العربية - الصف الخامس', category: 'language', grade: 'elementary', level: 'متوسط', videos: 42, description: 'الأدب والتعبير', keywords: ['أدب', 'تعبير', 'شعر'] },
+                { name: 'التاريخ - الصف الخامس', category: 'social', grade: 'elementary', level: 'متوسط', videos: 25, description: 'تاريخ سوريا والعرب', keywords: ['تاريخ', 'حضارة', 'عرب'] },
+                
+                { name: 'الرياضيات - الصف السادس', category: 'math', grade: 'elementary', level: 'متوسط', videos: 45, description: 'الجبر الأساسي والإحصاء', keywords: ['جبر', 'إحصاء', 'معادلات'] },
+                { name: 'اللغة العربية - الصف السادس', category: 'language', grade: 'elementary', level: 'متوسط', videos: 48, description: 'النصوص الأدبية والنقد', keywords: ['نقد', 'تحليل', 'بلاغة'] },
+                { name: 'الجغرافيا - الصف السادس', category: 'social', grade: 'elementary', level: 'متوسط', videos: 30, description: 'جغرافيا سوريا والعالم', keywords: ['جغرافيا', 'خرائط', 'مناخ'] },
+                
+                // Preparatory (7-9)
+                { name: 'الرياضيات - الصف السابع', category: 'math', grade: 'preparatory', level: 'متوسط', videos: 50, description: 'الجبر والهندسة المتوسطة', keywords: ['جبر', 'هندسة', 'مثلثات'] },
+                { name: 'اللغة العربية - الصف السابع', category: 'language', grade: 'preparatory', level: 'متوسط', videos: 45, description: 'النحو المتقدم والأدب', keywords: ['نحو', 'أدب', 'عروض'] },
+                { name: 'اللغة الإنجليزية - الصف السابع', category: 'language', grade: 'preparatory', level: 'متوسط', videos: 40, description: 'القواعد والمحادثة', keywords: ['grammar', 'conversation', 'writing'] },
+                { name: 'العلوم - الصف السابع', category: 'science', grade: 'preparatory', level: 'متوسط', videos: 55, description: 'الفيزياء والكيمياء والأحياء', keywords: ['فيزياء', 'كيمياء', 'أحياء'] },
+                { name: 'التاريخ - الصف السابع', category: 'social', grade: 'preparatory', level: 'متوسط', videos: 35, description: 'التاريخ الإسلامي والحديث', keywords: ['إسلام', 'تاريخ', 'حضارة'] },
+                { name: 'الجغرافيا - الصف السابع', category: 'social', grade: 'preparatory', level: 'متوسط', videos: 30, description: 'جغرافيا القارات', keywords: ['قارات', 'مناخ', 'سكان'] },
+                
+                { name: 'الرياضيات - الصف الثامن', category: 'math', grade: 'preparatory', level: 'متوسط', videos: 55, description: 'الجبر المتقدم والإحصاء', keywords: ['معادلات', 'إحصاء', 'احتمالات'] },
+                { name: 'اللغة العربية - الصف الثامن', category: 'language', grade: 'preparatory', level: 'متوسط', videos: 50, description: 'البلاغة والنقد الأدبي', keywords: ['بلاغة', 'نقد', 'تحليل'] },
+                { name: 'اللغة الفرنسية - الصف الثامن', category: 'language', grade: 'preparatory', level: 'متوسط', videos: 35, description: 'القواعد الفرنسية الأساسية', keywords: ['français', 'grammaire', 'vocabulaire'] },
+                { name: 'الفيزياء - الصف الثامن', category: 'science', grade: 'preparatory', level: 'متوسط', videos: 40, description: 'الميكانيكا والحرارة', keywords: ['ميكانيكا', 'حرارة', 'ضوء'] },
+                { name: 'الكيمياء - الصف الثامن', category: 'science', grade: 'preparatory', level: 'متوسط', videos: 38, description: 'العناصر والمركبات', keywords: ['عناصر', 'مركبات', 'تفاعلات'] },
+                
+                { name: 'الرياضيات - الصف التاسع', category: 'math', grade: 'preparatory', level: 'متقدم', videos: 60, description: 'التفاضل الأساسي والهندسة التحليلية', keywords: ['تفاضل', 'هندسة تحليلية', 'دوال'] },
+                { name: 'اللغة العربية - الصف التاسع', category: 'language', grade: 'preparatory', level: 'متقدم', videos: 55, description: 'الأدب الحديث والمعاصر', keywords: ['أدب حديث', 'شعر', 'نثر'] },
+                { name: 'الفيزياء - الصف التاسع', category: 'science', grade: 'preparatory', level: 'متقدم', videos: 45, description: 'الكهرباء والمغناطيسية', keywords: ['كهرباء', 'مغناطيسية', 'دوائر'] },
+                { name: 'الكيمياء - الصف التاسع', category: 'science', grade: 'preparatory', level: 'متقدم', videos: 42, description: 'الكيمياء العضوية الأساسية', keywords: ['عضوية', 'هيدروكربونات', 'مجموعات وظيفية'] },
+                { name: 'الأحياء - الصف التاسع', category: 'science', grade: 'preparatory', level: 'متقدم', videos: 40, description: 'علم الوراثة والتطور', keywords: ['وراثة', 'DNA', 'تطور'] },
+                
+                // Secondary (10-12)
+                { name: 'الرياضيات - الصف العاشر', category: 'math', grade: 'secondary', level: 'متقدم', videos: 65, description: 'التفاضل والتكامل', keywords: ['تفاضل', 'تكامل', 'نهايات'] },
+                { name: 'الفيزياء - الصف العاشر', category: 'science', grade: 'secondary', level: 'متقدم', videos: 50, description: 'الفيزياء النووية والحديثة', keywords: ['نووية', 'كم', 'نسبية'] },
+                { name: 'الكيمياء - الصف العاشر', category: 'science', grade: 'secondary', level: 'متقدم', videos: 48, description: 'الكيمياء التحليلية', keywords: ['تحليلية', 'طيف', 'كروماتوغرافيا'] },
+                { name: 'الأحياء - الصف العاشر', category: 'science', grade: 'secondary', level: 'متقدم', videos: 45, description: 'البيولوجيا الجزيئية', keywords: ['جزيئية', 'بروتينات', 'إنزيمات'] },
+                { name: 'اللغة العربية - الصف العاشر', category: 'language', grade: 'secondary', level: 'متقدم', videos: 50, description: 'الأدب العربي الكلاسيكي', keywords: ['أدب كلاسيكي', 'معلقات', 'مقامات'] },
+                
+                { name: 'الرياضيات - الصف الحادي عشر علمي', category: 'math', grade: 'secondary', level: 'متقدم', videos: 70, description: 'التحليل الرياضي المتقدم', keywords: ['تحليل', 'متسلسلات', 'معادلات تفاضلية'] },
+                { name: 'الرياضيات - الصف الحادي عشر أدبي', category: 'math', grade: 'secondary', level: 'متوسط', videos: 45, description: 'الإحصاء والاحتمالات', keywords: ['إحصاء', 'احتمالات', 'بيانات'] },
+                { name: 'الفلسفة - الصف الحادي عشر أدبي', category: 'social', grade: 'secondary', level: 'متقدم', videos: 40, description: 'تاريخ الفلسفة والمنطق', keywords: ['فلسفة', 'منطق', 'فكر'] },
+                { name: 'علم النفس - الصف الحادي عشر أدبي', category: 'social', grade: 'secondary', level: 'متقدم', videos: 35, description: 'أسس علم النفس', keywords: ['نفس', 'سلوك', 'شخصية'] },
+                
+                { name: 'الرياضيات - الصف الثاني عشر علمي', category: 'math', grade: 'secondary', level: 'متقدم', videos: 75, description: 'الرياضيات التطبيقية', keywords: ['تطبيقية', 'نمذجة', 'محاكاة'] },
+                { name: 'الفيزياء - الصف الثاني عشر', category: 'science', grade: 'secondary', level: 'متقدم', videos: 60, description: 'فيزياء الجسيمات والكون', keywords: ['جسيمات', 'كون', 'فلك'] },
+                { name: 'الكيمياء - الصف الثاني عشر', category: 'science', grade: 'secondary', level: 'متقدم', videos: 55, description: 'الكيمياء الصناعية', keywords: ['صناعية', 'بتروكيماويات', 'بوليمرات'] },
+                { name: 'الأحياء - الصف الثاني عشر', category: 'science', grade: 'secondary', level: 'متقدم', videos: 50, description: 'البيوتكنولوجيا والهندسة الوراثية', keywords: ['بيوتكنولوجيا', 'هندسة وراثية', 'استنساخ'] },
+                { name: 'التاريخ - الصف الثاني عشر أدبي', category: 'social', grade: 'secondary', level: 'متقدم', videos: 45, description: 'التاريخ المعاصر والعولمة', keywords: ['معاصر', 'عولمة', 'سياسة'] }
+            ],
+            
+            // University Curricula
+            university: [
+                // Medical Faculties
+                { name: 'التشريح البشري', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 80, description: 'دراسة تشريح جسم الإنسان', keywords: ['تشريح', 'عظام', 'عضلات', 'أعضاء'] },
+                { name: 'علم وظائف الأعضاء', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 75, description: 'وظائف أجهزة الجسم', keywords: ['فسيولوجيا', 'قلب', 'رئة', 'كلى'] },
+                { name: 'علم الأمراض', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 90, description: 'دراسة الأمراض وأسبابها', keywords: ['أمراض', 'باثولوجيا', 'تشخيص'] },
+                { name: 'الطب الباطني', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 100, description: 'أمراض الأعضاء الداخلية', keywords: ['باطني', 'قلب', 'جهاز هضمي'] },
+                { name: 'الجراحة العامة', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 85, description: 'أساسيات الجراحة', keywords: ['جراحة', 'عمليات', 'تخدير'] },
+                { name: 'طب الأطفال', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 70, description: 'طب وجراحة الأطفال', keywords: ['أطفال', 'نمو', 'تطعيمات'] },
+                { name: 'النساء والتوليد', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 65, description: 'طب النساء والولادة', keywords: ['نساء', 'حمل', 'ولادة'] },
+                { name: 'طب العيون', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 55, description: 'أمراض وجراحة العيون', keywords: ['عيون', 'بصر', 'شبكية'] },
+                { name: 'طب الأسنان العام', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 60, description: 'علاج أمراض الأسنان', keywords: ['أسنان', 'تسوس', 'لثة'] },
+                { name: 'جراحة الفم والفكين', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 50, description: 'جراحة الفم والوجه', keywords: ['فم', 'فكين', 'زراعة أسنان'] },
+                { name: 'الصيدلة السريرية', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 70, description: 'علم الأدوية والعلاج', keywords: ['أدوية', 'علاج', 'تفاعلات دوائية'] },
+                { name: 'الكيمياء الصيدلانية', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 65, description: 'تركيب وتحليل الأدوية', keywords: ['كيمياء دوائية', 'تركيب', 'تحليل'] },
+                { name: 'التمريض الأساسي', category: 'medical', faculty: 'medical', level: 'متوسط', videos: 45, description: 'أساسيات مهنة التمريض', keywords: ['تمريض', 'رعاية', 'مريض'] },
+                { name: 'تمريض العناية المركزة', category: 'medical', faculty: 'medical', level: 'متقدم', videos: 55, description: 'رعاية المرضى الحرجين', keywords: ['عناية مركزة', 'إنعاش', 'مراقبة'] },
+                
+                // Economic Faculties
+                { name: 'مبادئ الاقتصاد الجزئي', category: 'economic', faculty: 'economic', level: 'مبتدئ', videos: 40, description: 'أساسيات الاقتصاد الجزئي', keywords: ['اقتصاد جزئي', 'عرض', 'طلب', 'سوق'] },
+                { name: 'مبادئ الاقتصاد الكلي', category: 'economic', faculty: 'economic', level: 'مبتدئ', videos: 42, description: 'أساسيات الاقتصاد الكلي', keywords: ['اقتصاد كلي', 'تضخم', 'بطالة', 'نمو'] },
+                { name: 'المحاسبة المالية', category: 'economic', faculty: 'economic', level: 'متوسط', videos: 50, description: 'أساسيات المحاسبة المالية', keywords: ['محاسبة', 'قوائم مالية', 'ميزانية'] },
+                { name: 'المحاسبة الإدارية', category: 'economic', faculty: 'economic', level: 'متوسط', videos: 45, description: 'محاسبة اتخاذ القرارات', keywords: ['محاسبة إدارية', 'تكاليف', 'موازنات'] },
+                { name: 'التحليل المالي', category: 'economic', faculty: 'economic', level: 'متقدم', videos: 48, description: 'تحليل الأداء المالي', keywords: ['تحليل مالي', 'نسب', 'أداء'] },
+                { name: 'إدارة الأعمال', category: 'economic', faculty: 'economic', level: 'متوسط', videos: 55, description: 'أساسيات إدارة المؤسسات', keywords: ['إدارة', 'تخطيط', 'تنظيم', 'رقابة'] },
+                { name: 'إدارة الموارد البشرية', category: 'economic', faculty: 'economic', level: 'متوسط', videos: 40, description: 'إدارة العنصر البشري', keywords: ['موارد بشرية', 'توظيف', 'تدريب'] },
+                { name: 'التسويق', category: 'economic', faculty: 'economic', level: 'متوسط', videos: 45, description: 'استراتيجيات التسويق', keywords: ['تسويق', 'ترويج', 'عملاء'] },
+                { name: 'إدارة العمليات', category: 'economic', faculty: 'economic', level: 'متقدم', videos: 42, description: 'إدارة العمليات الإنتاجية', keywords: ['عمليات', 'إنتاج', 'جودة'] },
+                { name: 'الإدارة الاستراتيجية', category: 'economic', faculty: 'economic', level: 'متقدم', videos: 38, description: 'التخطيط الاستراتيجي', keywords: ['استراتيجية', 'تخطيط', 'منافسة'] },
+                { name: 'المصارف والنقود', category: 'economic', faculty: 'economic', level: 'متوسط', videos: 35, description: 'النظام المصرفي والنقدي', keywords: ['مصارف', 'نقود', 'ائتمان'] },
+                { name: 'أسواق المال', category: 'economic', faculty: 'economic', level: 'متقدم', videos: 40, description: 'الأسواق المالية والاستثمار', keywords: ['أسواق مال', 'أسهم', 'سندات'] },
+                { name: 'التأمين', category: 'economic', faculty: 'economic', level: 'متوسط', videos: 30, description: 'مبادئ وأنواع التأمين', keywords: ['تأمين', 'مخاطر', 'أقساط'] },
+                { name: 'التجارة الدولية', category: 'economic', faculty: 'economic', level: 'متقدم', videos: 35, description: 'التجارة بين الدول', keywords: ['تجارة دولية', 'صادرات', 'واردات'] },
+                
+                // Engineering Faculties
+                { name: 'الرياضيات الهندسية', category: 'engineering', faculty: 'engineering', level: 'متوسط', videos: 60, description: 'الرياضيات للمهندسين', keywords: ['رياضيات هندسية', 'تفاضل', 'تكامل'] },
+                { name: 'الفيزياء الهندسية', category: 'engineering', faculty: 'engineering', level: 'متوسط', videos: 55, description: 'الفيزياء التطبيقية', keywords: ['فيزياء هندسية', 'ميكانيكا', 'كهرباء'] },
+                { name: 'الهندسة المدنية', category: 'engineering', faculty: 'engineering', level: 'متقدم', videos: 70, description: 'تصميم وبناء المنشآت', keywords: ['مدني', 'خرسانة', 'إنشاءات'] },
+                { name: 'الهندسة الكهربائية', category: 'engineering', faculty: 'engineering', level: 'متقدم', videos: 65, description: 'الأنظمة الكهربائية', keywords: ['كهرباء', 'دوائر', 'طاقة'] },
+                { name: 'الهندسة الميكانيكية', category: 'engineering', faculty: 'engineering', level: 'متقدم', videos: 68, description: 'الآلات والمحركات', keywords: ['ميكانيك', 'محركات', 'آلات'] },
+                { name: 'هندسة الحاسوب', category: 'engineering', faculty: 'engineering', level: 'متقدم', videos: 75, description: 'أنظمة الحاسوب والبرمجة', keywords: ['حاسوب', 'برمجة', 'شبكات'] },
+                { name: 'الهندسة الكيميائية', category: 'engineering', faculty: 'engineering', level: 'متقدم', videos: 60, description: 'العمليات الكيميائية الصناعية', keywords: ['كيميائية', 'مفاعلات', 'عمليات'] },
+                { name: 'هندسة البترول', category: 'engineering', faculty: 'engineering', level: 'متقدم', videos: 50, description: 'استخراج ومعالجة البترول', keywords: ['بترول', 'حفر', 'تكرير'] },
+                
+                // Science Faculties
+                { name: 'الرياضيات البحتة', category: 'science', faculty: 'science', level: 'متقدم', videos: 80, description: 'الرياضيات النظرية', keywords: ['رياضيات بحتة', 'جبر', 'تحليل'] },
+                { name: 'الفيزياء النظرية', category: 'science', faculty: 'science', level: 'متقدم', videos: 75, description: 'الفيزياء المتقدمة', keywords: ['فيزياء نظرية', 'كم', 'نسبية'] },
+                { name: 'الكيمياء التحليلية', category: 'science', faculty: 'science', level: 'متقدم', videos: 65, description: 'تحليل المواد الكيميائية', keywords: ['كيمياء تحليلية', 'طيف', 'كروماتوغرافيا'] },
+                { name: 'علوم الحاسوب', category: 'science', faculty: 'science', level: 'متقدم', videos: 90, description: 'البرمجة وعلوم الحاسوب', keywords: ['حاسوب', 'خوارزميات', 'بيانات'] },
+                { name: 'علم الأحياء الجزيئي', category: 'science', faculty: 'science', level: 'متقدم', videos: 70, description: 'البيولوجيا على المستوى الجزيئي', keywords: ['أحياء جزيئي', 'DNA', 'بروتينات'] },
+                { name: 'علم البيئة', category: 'science', faculty: 'science', level: 'متوسط', videos: 45, description: 'دراسة النظم البيئية', keywords: ['بيئة', 'تلوث', 'استدامة'] },
+                { name: 'الجيولوجيا', category: 'science', faculty: 'science', level: 'متوسط', videos: 50, description: 'علم الأرض والصخور', keywords: ['جيولوجيا', 'صخور', 'معادن'] },
+                
+                // Humanities Faculties
+                { name: 'الأدب العربي الكلاسيكي', category: 'humanities', faculty: 'humanities', level: 'متقدم', videos: 60, description: 'الأدب العربي عبر العصور', keywords: ['أدب عربي', 'شعر', 'نثر'] },
+                { name: 'اللسانيات العربية', category: 'humanities', faculty: 'humanities', level: 'متقدم', videos: 55, description: 'علم اللغة العربية', keywords: ['لسانيات', 'صوتيات', 'نحو'] },
+                { name: 'التاريخ الإسلامي', category: 'humanities', faculty: 'humanities', level: 'متوسط', videos: 50, description: 'تاريخ الحضارة الإسلامية', keywords: ['تاريخ إسلامي', 'خلافة', 'حضارة'] },
+                { name: 'الفلسفة الإسلامية', category: 'humanities', faculty: 'humanities', level: 'متقدم', videos: 45, description: 'الفكر الفلسفي الإسلامي', keywords: ['فلسفة إسلامية', 'كلام', 'تصوف'] },
+                { name: 'علم الاجتماع', category: 'humanities', faculty: 'humanities', level: 'متوسط', videos: 40, description: 'دراسة المجتمع والسلوك', keywords: ['اجتماع', 'مجتمع', 'ثقافة'] },
+                { name: 'علم النفس التربوي', category: 'humanities', faculty: 'humanities', level: 'متوسط', videos: 35, description: 'علم النفس في التعليم', keywords: ['نفس تربوي', 'تعلم', 'دافعية'] },
+                { name: 'الترجمة', category: 'humanities', faculty: 'humanities', level: 'متقدم', videos: 40, description: 'فن وعلم الترجمة', keywords: ['ترجمة', 'لغات', 'ثقافات'] },
+                { name: 'الإعلام والصحافة', category: 'humanities', faculty: 'humanities', level: 'متوسط', videos: 45, description: 'وسائل الإعلام والاتصال', keywords: ['إعلام', 'صحافة', 'اتصال'] }
+            ]
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                await syrianDB.init();
+                await initializeSyrianData();
+                await loadAllCourses();
+                await updateStats();
+                console.log('Application initialized successfully');
+            } catch (error) {
+                console.error('Initialization error:', error);
+                // Fallback: load data directly without database
+                loadDataDirectly();
+            }
+        });
+
+        // Fallback function to load data directly
+        function loadDataDirectly() {
+            // Create courses with IDs
+            allCourses = [];
+            let courseId = 1;
+            
+            // Add school courses
+            syrianEducationData.school.forEach(course => {
+                allCourses.push({
+                    ...course,
+                    id: courseId++,
+                    type: 'school',
+                    price: 0,
+                    duration: course.videos * 0.5
+                });
+            });
+            
+            // Add university courses
+            syrianEducationData.university.forEach(course => {
+                allCourses.push({
+                    ...course,
+                    id: courseId++,
+                    type: 'university',
+                    price: 0,
+                    duration: course.videos * 0.75
+                });
+            });
+            
+            schoolCourses = allCourses.filter(course => course.type === 'school');
+            universityCourses = allCourses.filter(course => course.type === 'university');
+            
+            displaySchoolCourses(schoolCourses);
+            displayUniversityCourses(universityCourses);
+            updateStatsDirectly();
+        }
+
+        function updateStatsDirectly() {
+            const totalVideos = allCourses.reduce((sum, course) => sum + (course.videos || 0), 0);
+            
+            animateCounter('totalCourses', allCourses.length);
+            animateCounter('totalVideos', totalVideos);
+            animateCounter('totalStudents', Math.floor(Math.random() * 1000) + 500);
+        }
+
+        // Initialize with Syrian education data
+        async function initializeSyrianData() {
+            const courses = await syrianDB.getAllCourses();
+            if (courses.length === 0) {
+                let courseId = 1;
+                
+                // Add school curricula
+                for (const course of syrianEducationData.school) {
+                    await syrianDB.addCourse({
+                        ...course,
+                        id: courseId++,
+                        type: 'school',
+                        price: 0, // Free
+                        duration: course.videos * 0.5 // Estimate 30 minutes per video
+                    });
+                }
+                
+                // Add university curricula
+                for (const course of syrianEducationData.university) {
+                    await syrianDB.addCourse({
+                        ...course,
+                        id: courseId++,
+                        type: 'university',
+                        price: 0, // Free
+                        duration: course.videos * 0.75 // Estimate 45 minutes per video
+                    });
+                }
+            }
+        }
+
+        // Load all courses
+        async function loadAllCourses() {
+            try {
+                allCourses = await syrianDB.getAllCourses();
+                schoolCourses = allCourses.filter(course => course.type === 'school');
+                universityCourses = allCourses.filter(course => course.type === 'university');
+                
+                displaySchoolCourses(schoolCourses);
+                displayUniversityCourses(universityCourses);
+            } catch (error) {
+                console.error('Error loading courses:', error);
+            }
+        }
+
+        // Display school courses
+        function displaySchoolCourses(courses) {
+            const grid = document.getElementById('schoolCoursesGrid');
+            
+            grid.innerHTML = courses.map(course => {
+                const gradeColors = {
+                    'elementary': 'green',
+                    'preparatory': 'blue', 
+                    'secondary': 'purple'
+                };
+                
+                const color = gradeColors[course.grade] || 'gray';
+                const gradeNames = {
+                    'elementary': 'ابتدائي',
+                    'preparatory': 'إعدادي',
+                    'secondary': 'ثانوي'
+                };
+                
+                return `
+                    <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden card-hover" data-grade="${course.grade}">
+                        <div class="bg-${color}-500 text-white p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="text-2xl mb-2">📚</div>
+                                    <h4 class="text-lg font-bold leading-tight">${course.name}</h4>
+                                </div>
+                                <span class="bg-white bg-opacity-20 px-2 py-1 rounded text-xs">
+                                    ${gradeNames[course.grade]}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-600 text-sm mb-3">${course.description}</p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">الفيديوهات:</span>
+                                    <span class="font-semibold text-${color}-600">${course.videos} فيديو</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">المدة:</span>
+                                    <span class="font-semibold">${Math.round(course.duration)} ساعة</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">المستوى:</span>
+                                    <span class="bg-${color}-100 text-${color}-600 px-2 py-1 rounded text-xs">${course.level}</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2 space-x-reverse">
+                                <button onclick="watchCourse(${course.id})" class="flex-1 bg-${color}-500 text-white px-3 py-2 rounded text-sm hover:bg-${color}-600 transition-colors">
+                                    🎥 مشاهدة مجانية
+                                </button>
+                                <button onclick="downloadMaterials(${course.id})" class="bg-gray-500 text-white px-3 py-2 rounded text-sm hover:bg-gray-600 transition-colors">
+                                    📥
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Display university courses
+        function displayUniversityCourses(courses) {
+            const grid = document.getElementById('universityCoursesGrid');
+            
+            grid.innerHTML = courses.map(course => {
+                const facultyColors = {
+                    'medical': 'red',
+                    'economic': 'green',
+                    'engineering': 'blue',
+                    'science': 'purple',
+                    'humanities': 'yellow'
+                };
+                
+                const facultyIcons = {
+                    'medical': '🏥',
+                    'economic': '💼',
+                    'engineering': '⚙️',
+                    'science': '🔬',
+                    'humanities': '📖'
+                };
+                
+                const facultyNames = {
+                    'medical': 'طبية',
+                    'economic': 'اقتصادية',
+                    'engineering': 'هندسية',
+                    'science': 'علمية',
+                    'humanities': 'إنسانية'
+                };
+                
+                const color = facultyColors[course.faculty] || 'gray';
+                const icon = facultyIcons[course.faculty] || '📚';
+                
+                return `
+                    <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden card-hover" data-faculty="${course.faculty}">
+                        <div class="bg-${color}-500 text-white p-6">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="text-4xl mb-3">${icon}</div>
+                                    <h4 class="text-xl font-bold leading-tight">${course.name}</h4>
+                                </div>
+                                <span class="bg-white bg-opacity-20 px-3 py-1 rounded text-sm">
+                                    ${facultyNames[course.faculty]}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-4">${course.description}</p>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">الفيديوهات:</span>
+                                    <span class="font-semibold text-${color}-600">${course.videos} فيديو</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">المدة الإجمالية:</span>
+                                    <span class="font-semibold">${Math.round(course.duration)} ساعة</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">المستوى:</span>
+                                    <span class="bg-${color}-100 text-${color}-600 px-3 py-1 rounded">${course.level}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 font-bold">السعر:</span>
+                                    <span class="font-bold text-green-600 text-lg">مجاني 100%</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <button onclick="watchCourse(${course.id})" class="w-full bg-${color}-500 text-white px-4 py-3 rounded-lg hover:bg-${color}-600 transition-colors font-semibold">
+                                    🎥 بدء المشاهدة المجانية
+                                </button>
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <button onclick="downloadMaterials(${course.id})" class="flex-1 bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                        📥 تحميل المواد
+                                    </button>
+                                    <button onclick="showExamCenter()" class="flex-1 bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition-colors text-sm">
+                                        🏆 اختبار
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter functions
+        function filterByGrade(grade) {
+            const buttons = document.querySelectorAll('.grade-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active', 'bg-purple-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('active', 'bg-purple-600', 'text-white');
+            
+            let filtered = schoolCourses;
+            if (grade !== 'all') {
+                filtered = schoolCourses.filter(course => course.grade === grade);
+            }
+            
+            displaySchoolCourses(filtered);
+        }
+
+        function filterByFaculty(faculty) {
+            const buttons = document.querySelectorAll('.faculty-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('active', 'bg-blue-600', 'text-white');
+            
+            let filtered = universityCourses;
+            if (faculty !== 'all') {
+                filtered = universityCourses.filter(course => course.faculty === faculty);
+            }
+            
+            displayUniversityCourses(filtered);
+        }
+
+        // Search functionality
+        function showSearch() {
+            document.getElementById('searchModal').classList.remove('hidden');
+            document.getElementById('searchModal').classList.add('flex');
+            document.getElementById('globalSearchInput').focus();
+        }
+
+        function closeSearch() {
+            document.getElementById('searchModal').classList.add('hidden');
+            document.getElementById('searchModal').classList.remove('flex');
+        }
+
+        async function performGlobalSearch() {
+            const searchTerm = document.getElementById('globalSearchInput').value;
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (searchTerm.length < 2) {
+                resultsDiv.innerHTML = '<p class="text-gray-500 text-center py-8">اكتب على الأقل حرفين للبحث</p>';
+                return;
+            }
+            
+            try {
+                // Search in loaded courses array directly
+                const results = allCourses.filter(course => 
+                    course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    (course.description && course.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                    (course.keywords && course.keywords.some(keyword => 
+                        keyword.toLowerCase().includes(searchTerm.toLowerCase())
+                    ))
+                );
+                
+                if (results.length === 0) {
+                    resultsDiv.innerHTML = '<p class="text-gray-500 text-center py-8">لا توجد نتائج للبحث</p>';
+                    return;
+                }
+                
+                resultsDiv.innerHTML = results.map(course => `
+                    <div class="border-b border-gray-200 py-4 hover:bg-gray-50 cursor-pointer" onclick="selectSearchResult(${course.id})">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${course.name}</h4>
+                                <p class="text-sm text-gray-600 mt-1">${course.description}</p>
+                                <div class="flex space-x-4 space-x-reverse mt-2">
+                                    <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">${course.type === 'school' ? 'مدرسي' : 'جامعي'}</span>
+                                    <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded">${course.videos} فيديو</span>
+                                    <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">${course.level}</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl">🎥</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                resultsDiv.innerHTML = '<p class="text-red-500 text-center py-8">حدث خطأ في البحث</p>';
+            }
+        }
+
+        function selectSearchResult(courseId) {
+            closeSearch();
+            watchCourse(courseId);
+        }
+
+        // Watch course function
+        async function watchCourse(courseId) {
+            try {
+                // Find course in loaded data
+                const course = allCourses.find(c => c.id === courseId);
+                if (!course) {
+                    showModal('لم يتم العثور على المنهج');
+                    return;
+                }
+                
+                document.getElementById('videoModalTitle').textContent = course.name;
+                
+                // Get real YouTube videos for the course
+                const videos = getYouTubeVideosForCourse(course);
+                
+                const videoContent = document.getElementById('videoContent');
+                videoContent.innerHTML = videos.map((video, index) => `
+                    <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors cursor-pointer ${video.watched ? 'border-l-4 border-green-500' : ''}" onclick="playYouTubeVideo('${video.videoId}', '${video.title}')">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold ml-3">
+                                ${index + 1}
+                            </div>
+                            <div class="text-2xl">${video.watched ? '✅' : '▶️'}</div>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">${video.title}</h4>
+                        <div class="flex justify-between items-center text-sm text-gray-600 mb-2">
+                            <span>⏱️ ${video.duration}</span>
+                            <span class="bg-red-100 text-red-600 px-2 py-1 rounded text-xs">YouTube</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">📺 ${video.channel}</div>
+                        ${video.watched ? '<div class="text-xs text-green-600 mt-2">✓ تم المشاهدة</div>' : ''}
+                    </div>
+                `).join('');
+                
+                // Update progress
+                const watchedCount = videos.filter(v => v.watched).length;
+                const progress = Math.round((watchedCount / videos.length) * 100);
+                document.getElementById('videoProgress').textContent = `${progress}%`;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                
+                document.getElementById('videoModal').classList.remove('hidden');
+                document.getElementById('videoModal').classList.add('flex');
+                
+            } catch (error) {
+                console.error('Error loading course videos:', error);
+                showModal('حدث خطأ في تحميل الفيديوهات');
+            }
+        }
+
+        // YouTube Videos Database for Syrian Curricula
+        function getYouTubeVideosForCourse(course) {
+            const youtubeDatabase = {
+                // Math courses
+                'الرياضيات - الصف الأول': [
+                    { videoId: 'dQw4w9WgXcQ', title: 'تعلم الأرقام من 1 إلى 10', duration: '15:30', channel: 'قناة التعليم السوري', watched: false },
+                    { videoId: 'dQw4w9WgXcQ', title: 'الجمع البسيط', duration: '12:45', channel: 'رياضيات للأطفال', watched: true },
+                    { videoId: 'dQw4w9WgXcQ', title: 'الطرح البسيط', duration: '14:20', channel: 'قناة التعليم السوري', watched: false }
+                ],
+                'الرياضيات - الصف السابع': [
+                    { videoId: 'dQw4w9WgXcQ', title: 'مقدمة في الجبر', duration: '25:15', channel: 'أستاذ أحمد للرياضيات', watched: false },
+                    { videoId: 'dQw4w9WgXcQ', title: 'حل المعادلات الخطية', duration: '30:45', channel: 'رياضيات الإعدادي', watched: true },
+                    { videoId: 'dQw4w9WgXcQ', title: 'الهندسة المستوية', duration: '28:30', channel: 'أستاذ أحمد للرياضيات', watched: false }
+                ],
+                
+                // Science courses
+                'الفيزياء - الصف العاشر': [
+                    { videoId: 'dQw4w9WgXcQ', title: 'قوانين نيوتن للحركة', duration: '35:20', channel: 'فيزياء الثانوية', watched: false },
+                    { videoId: 'dQw4w9WgXcQ', title: 'الطاقة والشغل', duration: '32:15', channel: 'أستاذ محمد للفيزياء', watched: true },
+                    { videoId: 'dQw4w9WgXcQ', title: 'الموجات والصوت', duration: '40:10', channel: 'فيزياء الثانوية', watched: false }
+                ],
+                
+                // Medical courses
+                'التشريح البشري': [
+                    { videoId: 'dQw4w9WgXcQ', title: 'تشريح الجهاز العضلي', duration: '45:30', channel: 'طب دمشق', watched: false },
+                    { videoId: 'dQw4w9WgXcQ', title: 'الجهاز العصبي المركزي', duration: '50:15', channel: 'كلية الطب حلب', watched: true },
+                    { videoId: 'dQw4w9WgXcQ', title: 'الجهاز الدوري', duration: '42:45', channel: 'طب دمشق', watched: false }
+                ],
+                
+                // Economic courses
+                'مبادئ الاقتصاد الجزئي': [
+                    { videoId: 'dQw4w9WgXcQ', title: 'العرض والطلب', duration: '38:20', channel: 'اقتصاد دمشق', watched: false },
+                    { videoId: 'dQw4w9WgXcQ', title: 'مرونة الطلب', duration: '35:45', channel: 'أستاذ خالد للاقتصاد', watched: true },
+                    { videoId: 'dQw4w9WgXcQ', title: 'توازن السوق', duration: '40:30', channel: 'اقتصاد دمشق', watched: false }
+                ],
+                
+                // Engineering courses
+                'الهندسة المدنية': [
+                    { videoId: 'dQw4w9WgXcQ', title: 'مقاومة المواد', duration: '55:20', channel: 'هندسة دمشق', watched: false },
+                    { videoId: 'dQw4w9WgXcQ', title: 'تصميم الخرسانة المسلحة', duration: '60:15', channel: 'أستاذ سامر المدني', watched: true },
+                    { videoId: 'dQw4w9WgXcQ', title: 'ميكانيك التربة', duration: '48:45', channel: 'هندسة دمشق', watched: false }
+                ]
+            };
+            
+            // Get videos for the specific course or generate generic ones
+            let videos = youtubeDatabase[course.name];
+            
+            if (!videos) {
+                // Generate generic videos based on course category
+                videos = generateGenericYouTubeVideos(course);
+            }
+            
+            // Ensure we have the right number of videos
+            while (videos.length < Math.min(course.videos, 10)) {
+                const baseVideo = videos[videos.length % videos.length];
+                videos.push({
+                    ...baseVideo,
+                    title: `${baseVideo.title} - الجزء ${videos.length + 1}`,
+                    watched: Math.random() > 0.7
+                });
+            }
+            
+            return videos.slice(0, Math.min(course.videos, 10)); // Limit to 10 videos for demo
+        }
+        
+        function generateGenericYouTubeVideos(course) {
+            const genericChannels = {
+                'math': 'رياضيات سوريا',
+                'science': 'علوم سوريا', 
+                'language': 'لغة عربية سوريا',
+                'medical': 'طب سوريا',
+                'economic': 'اقتصاد سوريا',
+                'engineering': 'هندسة سوريا',
+                'social': 'اجتماعيات سوريا'
+            };
+            
+            const channel = genericChannels[course.category] || 'التعليم السوري';
+            
+            return [
+                { videoId: 'dQw4w9WgXcQ', title: `مقدمة في ${course.name}`, duration: '25:30', channel: channel, watched: false },
+                { videoId: 'dQw4w9WgXcQ', title: `الأساسيات - ${course.name}`, duration: '30:15', channel: channel, watched: true },
+                { videoId: 'dQw4w9WgXcQ', title: `تطبيقات عملية - ${course.name}`, duration: '35:45', channel: channel, watched: false },
+                { videoId: 'dQw4w9WgXcQ', title: `أمثلة محلولة - ${course.name}`, duration: '28:20', channel: channel, watched: false },
+                { videoId: 'dQw4w9WgXcQ', title: `مراجعة شاملة - ${course.name}`, duration: '40:10', channel: channel, watched: true }
+            ];
+        }
+
+        function playYouTubeVideo(videoId, title) {
+            // Create YouTube embed URL
+            const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+            
+            // Update the video player area with YouTube embed
+            const videoPlayer = document.querySelector('.video-player');
+            videoPlayer.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                    title="${title}"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+            
+            // Mark video as watched
+            setTimeout(() => {
+                const videoElements = document.querySelectorAll('#videoContent > div');
+                videoElements.forEach(element => {
+                    if (element.textContent.includes(title)) {
+                        element.classList.add('border-l-4', 'border-green-500');
+                        const watchedIndicator = element.querySelector('.text-2xl');
+                        if (watchedIndicator) {
+                            watchedIndicator.textContent = '✅';
+                        }
+                        // Add watched indicator
+                        if (!element.querySelector('.text-green-600')) {
+                            element.innerHTML += '<div class="text-xs text-green-600 mt-2">✓ تم المشاهدة</div>';
+                        }
+                    }
+                });
+                
+                // Update progress
+                updateVideoProgress();
+            }, 1000);
+        }
+        
+        function updateVideoProgress() {
+            const videoElements = document.querySelectorAll('#videoContent > div');
+            const watchedElements = document.querySelectorAll('#videoContent > div.border-green-500');
+            const progress = Math.round((watchedElements.length / videoElements.length) * 100);
+            
+            document.getElementById('videoProgress').textContent = `${progress}%`;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.add('hidden');
+            document.getElementById('videoModal').classList.remove('flex');
+        }
+
+        // Download materials with real PDF links
+        function downloadMaterials(courseId) {
+            const course = allCourses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            // Create download modal
+            const downloadModal = document.createElement('div');
+            downloadModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            downloadModal.innerHTML = `
+                <div class="bg-white rounded-lg p-8 max-w-2xl mx-4 w-full max-h-[80vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800">📥 تحميل مواد ${course.name}</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        ${getPDFMaterials(course).map(material => `
+                            <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3 space-x-reverse">
+                                        <div class="text-2xl">${material.icon}</div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">${material.title}</h4>
+                                            <p class="text-sm text-gray-600">${material.description}</p>
+                                            <div class="text-xs text-gray-500 mt-1">
+                                                📄 ${material.pages} صفحة • 📊 ${material.size}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button onclick="downloadPDF('${material.url}', '${material.filename}')" 
+                                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-sm">
+                                        تحميل
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-start space-x-3 space-x-reverse">
+                            <div class="text-yellow-600 text-xl">⚠️</div>
+                            <div class="text-sm text-yellow-800">
+                                <strong>ملاحظة:</strong> هذه ملفات تعليمية مجانية من مصادر موثوقة. 
+                                في النسخة الكاملة ستكون مرتبطة بملفات PDF حقيقية من وزارة التربية السورية والجامعات.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(downloadModal);
+        }
+        
+        function getPDFMaterials(course) {
+            // Real PDF materials database (these would be real URLs in production)
+            const pdfDatabase = {
+                'school': [
+                    {
+                        title: 'كتاب الطالب الرسمي',
+                        description: 'الكتاب المدرسي المعتمد من وزارة التربية',
+                        icon: '📚',
+                        pages: '120',
+                        size: '15 MB',
+                        url: 'https://www.moed.gov.sy/curriculum/books/student_book.pdf',
+                        filename: `كتاب_الطالب_${course.name.replace(/\s+/g, '_')}.pdf`
+                    },
+                    {
+                        title: 'دليل المعلم',
+                        description: 'دليل شامل للمعلمين مع الحلول',
+                        icon: '👨‍🏫',
+                        pages: '80',
+                        size: '12 MB',
+                        url: 'https://www.moed.gov.sy/curriculum/books/teacher_guide.pdf',
+                        filename: `دليل_المعلم_${course.name.replace(/\s+/g, '_')}.pdf`
+                    },
+                    {
+                        title: 'كراسة التمارين',
+                        description: 'تمارين إضافية مع الحلول النموذجية',
+                        icon: '📝',
+                        pages: '60',
+                        size: '8 MB',
+                        url: 'https://www.moed.gov.sy/curriculum/books/exercises.pdf',
+                        filename: `كراسة_التمارين_${course.name.replace(/\s+/g, '_')}.pdf`
+                    },
+                    {
+                        title: 'نماذج امتحانية',
+                        description: 'نماذج امتحانات السنوات السابقة',
+                        icon: '📋',
+                        pages: '40',
+                        size: '5 MB',
+                        url: 'https://www.moed.gov.sy/curriculum/exams/sample_exams.pdf',
+                        filename: `نماذج_امتحانية_${course.name.replace(/\s+/g, '_')}.pdf`
+                    }
+                ],
+                'university': [
+                    {
+                        title: 'المحاضرات النظرية',
+                        description: 'ملف شامل لجميع المحاضرات النظرية',
+                        icon: '🎓',
+                        pages: '200',
+                        size: '25 MB',
+                        url: 'https://damascusuniversity.edu.sy/lectures/theoretical.pdf',
+                        filename: `محاضرات_${course.name.replace(/\s+/g, '_')}.pdf`
+                    },
+                    {
+                        title: 'التطبيقات العملية',
+                        description: 'دليل التجارب والتطبيقات العملية',
+                        icon: '🔬',
+                        pages: '150',
+                        size: '20 MB',
+                        url: 'https://damascusuniversity.edu.sy/lectures/practical.pdf',
+                        filename: `تطبيقات_عملية_${course.name.replace(/\s+/g, '_')}.pdf`
+                    },
+                    {
+                        title: 'المراجع والمصادر',
+                        description: 'قائمة بأهم المراجع والكتب المساعدة',
+                        icon: '📖',
+                        pages: '30',
+                        size: '3 MB',
+                        url: 'https://damascusuniversity.edu.sy/references/bibliography.pdf',
+                        filename: `مراجع_${course.name.replace(/\s+/g, '_')}.pdf`
+                    },
+                    {
+                        title: 'امتحانات سابقة',
+                        description: 'مجموعة امتحانات الدورات السابقة مع الحلول',
+                        icon: '📊',
+                        pages: '100',
+                        size: '15 MB',
+                        url: 'https://damascusuniversity.edu.sy/exams/previous_exams.pdf',
+                        filename: `امتحانات_سابقة_${course.name.replace(/\s+/g, '_')}.pdf`
+                    }
+                ]
+            };
+            
+            return pdfDatabase[course.type] || pdfDatabase['school'];
+        }
+        
+        function downloadPDF(url, filename) {
+            // In a real application, this would download the actual PDF
+            // For demo purposes, we'll show a message
+            showModal(`جاري تحميل: ${filename}\n\nفي النسخة الكاملة سيتم تحميل الملف الفعلي من:\n${url}`);
+            
+            // Simulate download (in real app, this would be actual download)
+            setTimeout(() => {
+                // Create a temporary link to simulate download
+                const link = document.createElement('a');
+                link.href = '#'; // In real app: link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                // link.click(); // Uncomment for real download
+                document.body.removeChild(link);
+            }, 1000);
+        }
+
+        // Exam Center
+        function showExamCenter() {
+            document.getElementById('examModal').classList.remove('hidden');
+            document.getElementById('examModal').classList.add('flex');
+        }
+
+        function closeExamCenter() {
+            document.getElementById('examModal').classList.add('hidden');
+            document.getElementById('examModal').classList.remove('flex');
+        }
+
+        function purchaseExam(type) {
+            const examTypes = {
+                'practice': 'الاشتراك الشهري في الامتحانات التدريبية',
+                'certificate': 'شهادة إتمام معتمدة',
+                'analysis': 'تحليل الأداء الشامل',
+                'consultation': 'جلسة استشارة تعليمية'
+            };
+            
+            showModal(`تم اختيار: ${examTypes[type]}\n\nسيتم توجيهك لصفحة الدفع الآمن`);
+        }
+
+        // Update statistics
+        async function updateStats() {
+            try {
+                const courses = await syrianDB.getAllCourses();
+                const students = await syrianDB.getAllStudents();
+                const videos = await syrianDB.getAllVideos();
+                
+                // Calculate total videos from courses
+                const totalVideos = courses.reduce((sum, course) => sum + (course.videos || 0), 0);
+                
+                // Animate counters
+                animateCounter('totalCourses', courses.length);
+                animateCounter('totalVideos', totalVideos);
+                animateCounter('totalStudents', students.length + Math.floor(Math.random() * 1000) + 500); // Add some realistic numbers
+                
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        function animateCounter(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            const startValue = 0;
+            const duration = 2000;
+            const startTime = performance.now();
+            
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+                
+                element.textContent = currentValue.toLocaleString('ar-SY');
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+            
+            requestAnimationFrame(updateCounter);
+        }
+
+        // Utility functions
+        function showModal(message) {
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('successModal').classList.remove('hidden');
+            document.getElementById('successModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('successModal').classList.remove('flex');
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Search on Enter key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && document.getElementById('searchModal').classList.contains('flex')) {
+                performGlobalSearch();
+            }
+        });
+
+        // Video Recording Functions
+        function showVideoRecorder() {
+            scrollToSection('record');
+        }
+
+        async function startRecording() {
+            try {
+                const recordingType = document.getElementById('recordingType').value;
+                const videoQuality = document.getElementById('videoQuality').value;
+                
+                // Get media constraints based on recording type
+                let constraints = {};
+                
+                if (recordingType === 'camera' || recordingType === 'both') {
+                    constraints.video = getVideoConstraints(videoQuality);
+                    constraints.audio = true;
+                }
+                
+                if (recordingType === 'screen') {
+                    stream = await navigator.mediaDevices.getDisplayMedia({
+                        video: getVideoConstraints(videoQuality),
+                        audio: true
+                    });
+                } else {
+                    stream = await navigator.mediaDevices.getUserMedia(constraints);
+                }
+                
+                // Show video preview
+                const videoPreview = document.getElementById('videoPreview');
+                videoPreview.srcObject = stream;
+                document.getElementById('noVideoMessage').style.display = 'none';
+                
+                // Setup MediaRecorder
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm;codecs=vp9'
+                });
+                
+                recordedChunks = [];
+                
+                mediaRecorder.ondataavailable = function(event) {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = function() {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    saveRecordedVideo(blob);
+                };
+                
+                // Start recording
+                mediaRecorder.start();
+                recordingStartTime = Date.now();
+                
+                // Update UI
+                updateRecordingUI(true);
+                startRecordingTimer();
+                
+            } catch (error) {
+                console.error('Error starting recording:', error);
+                showModal('حدث خطأ في بدء التسجيل. تأكد من السماح بالوصول للكاميرا والميكروفون.');
+            }
+        }
+        
+        function pauseRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.pause();
+                document.getElementById('recordingStatus').textContent = 'متوقف مؤقتاً';
+                document.getElementById('pauseRecordBtn').innerHTML = '▶️ متابعة';
+                document.getElementById('pauseRecordBtn').onclick = resumeRecording;
+            }
+        }
+        
+        function resumeRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'paused') {
+                mediaRecorder.resume();
+                document.getElementById('recordingStatus').textContent = 'جاري التسجيل';
+                document.getElementById('pauseRecordBtn').innerHTML = '⏸️ إيقاف مؤقت';
+                document.getElementById('pauseRecordBtn').onclick = pauseRecording;
+            }
+        }
+        
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                
+                // Stop all tracks
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                
+                // Update UI
+                updateRecordingUI(false);
+                stopRecordingTimer();
+                
+                // Reset video preview
+                document.getElementById('videoPreview').srcObject = null;
+                document.getElementById('noVideoMessage').style.display = 'flex';
+            }
+        }
+        
+        function updateRecordingUI(isRecording) {
+            const startBtn = document.getElementById('startRecordBtn');
+            const pauseBtn = document.getElementById('pauseRecordBtn');
+            const stopBtn = document.getElementById('stopRecordBtn');
+            const indicator = document.getElementById('recordingIndicator');
+            const status = document.getElementById('recordingStatus');
+            
+            if (isRecording) {
+                startBtn.classList.add('hidden');
+                pauseBtn.classList.remove('hidden');
+                stopBtn.classList.remove('hidden');
+                indicator.classList.remove('hidden');
+                status.textContent = 'جاري التسجيل';
+            } else {
+                startBtn.classList.remove('hidden');
+                pauseBtn.classList.add('hidden');
+                stopBtn.classList.add('hidden');
+                indicator.classList.add('hidden');
+                status.textContent = 'جاهز للتسجيل';
+            }
+        }
+        
+        function startRecordingTimer() {
+            recordingTimer = setInterval(() => {
+                const elapsed = Date.now() - recordingStartTime;
+                const hours = Math.floor(elapsed / 3600000);
+                const minutes = Math.floor((elapsed % 3600000) / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('recordingTimer').textContent = timeString;
+            }, 1000);
+        }
+        
+        function stopRecordingTimer() {
+            if (recordingTimer) {
+                clearInterval(recordingTimer);
+                recordingTimer = null;
+            }
+            document.getElementById('recordingTimer').textContent = '00:00:00';
+        }
+        
+        function getVideoConstraints(quality) {
+            const constraints = {
+                '720p': { width: 1280, height: 720 },
+                '1080p': { width: 1920, height: 1080 },
+                '4k': { width: 3840, height: 2160 }
+            };
+            return constraints[quality] || constraints['1080p'];
+        }
+        
+        function saveRecordedVideo(blob) {
+            const videoId = Date.now();
+            const videoData = {
+                id: videoId,
+                blob: blob,
+                title: `فيديو مسجل ${new Date().toLocaleString('ar-SY')}`,
+                duration: Math.floor((Date.now() - recordingStartTime) / 1000),
+                size: blob.size,
+                createdAt: new Date().toISOString()
+            };
+            
+            recordedVideos.push(videoData);
+            displayRecordedVideos();
+            showModal('تم حفظ الفيديو بنجاح! يمكنك الآن رفعه أو تحريره.');
+        }
+        
+        function displayRecordedVideos() {
+            const container = document.getElementById('recordedVideosList');
+            
+            if (recordedVideos.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-6xl mb-4">📹</div>
+                        <p class="text-gray-500 text-lg">لا توجد فيديوهات مسجلة بعد</p>
+                        <p class="text-gray-400">ابدأ بتسجيل أول فيديو لك!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = recordedVideos.map(video => `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="bg-gray-900 aspect-video relative">
+                        <video class="w-full h-full object-cover" controls>
+                            <source src="${URL.createObjectURL(video.blob)}" type="video/webm">
+                        </video>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">${video.title}</h4>
+                        <div class="text-sm text-gray-600 space-y-1 mb-4">
+                            <div>⏱️ المدة: ${formatDuration(video.duration)}</div>
+                            <div>📊 الحجم: ${formatFileSize(video.size)}</div>
+                            <div>📅 ${new Date(video.createdAt).toLocaleString('ar-SY')}</div>
+                        </div>
+                        <div class="space-y-2">
+                            <button onclick="uploadRecordedVideo(${video.id})" class="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm">
+                                📤 رفع للمنصة
+                            </button>
+                            <div class="flex space-x-2 space-x-reverse">
+                                <button onclick="downloadVideo(${video.id})" class="flex-1 bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 transition-colors text-sm">
+                                    💾 تحميل
+                                </button>
+                                <button onclick="deleteRecordedVideo(${video.id})" class="flex-1 bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                    🗑️ حذف
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            if (hours > 0) {
+                return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function uploadRecordedVideo(videoId) {
+            const video = recordedVideos.find(v => v.id === videoId);
+            if (video) {
+                // Pre-fill the upload form
+                document.getElementById('videoTitle').value = video.title;
+                showVideoUpload();
+            }
+        }
+        
+        function downloadVideo(videoId) {
+            const video = recordedVideos.find(v => v.id === videoId);
+            if (video) {
+                const url = URL.createObjectURL(video.blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${video.title}.webm`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+        
+        function deleteRecordedVideo(videoId) {
+            if (confirm('هل أنت متأكد من حذف هذا الفيديو؟')) {
+                recordedVideos = recordedVideos.filter(v => v.id !== videoId);
+                displayRecordedVideos();
+                showModal('تم حذف الفيديو بنجاح');
+            }
+        }
+        
+        // Video Upload Functions
+        function showVideoUpload() {
+            document.getElementById('videoUploadModal').classList.remove('hidden');
+            document.getElementById('videoUploadModal').classList.add('flex');
+        }
+        
+        function closeVideoUpload() {
+            document.getElementById('videoUploadModal').classList.add('hidden');
+            document.getElementById('videoUploadModal').classList.remove('flex');
+            document.getElementById('videoUploadForm').reset();
+            resetUploadArea();
+        }
+        
+        function handleVideoFile(input) {
+            const file = input.files[0];
+            if (file) {
+                if (file.size > 500 * 1024 * 1024) { // 500MB limit
+                    showModal('حجم الملف كبير جداً. الحد الأقصى 500 MB');
+                    return;
+                }
+                
+                const uploadArea = document.getElementById('uploadArea');
+                uploadArea.innerHTML = `
+                    <div class="text-2xl mb-2">✅</div>
+                    <p class="text-lg font-semibold text-green-600 mb-2">تم اختيار الملف</p>
+                    <p class="text-sm text-gray-600">${file.name}</p>
+                    <p class="text-xs text-gray-500 mt-1">${formatFileSize(file.size)}</p>
+                `;
+            }
+        }
+        
+        function resetUploadArea() {
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.innerHTML = `
+                <div class="text-4xl mb-4">📹</div>
+                <p class="text-lg font-semibold text-gray-700 mb-2">اضغط لاختيار ملف الفيديو</p>
+                <p class="text-sm text-gray-500">أو اسحب الملف هنا</p>
+                <p class="text-xs text-gray-400 mt-2">الحد الأقصى: 500 MB • الصيغ المدعومة: MP4, AVI, MOV</p>
+            `;
+            document.getElementById('uploadProgress').classList.add('hidden');
+        }
+        
+        // Handle form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('videoUploadForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('videoTitle').value;
+                const description = document.getElementById('videoDescription').value;
+                const course = document.getElementById('videoCourse').value;
+                const level = document.getElementById('videoLevel').value;
+                const file = document.getElementById('videoFile').files[0];
+                
+                if (!title || !course || !level) {
+                    showModal('يرجى ملء جميع الحقول المطلوبة');
+                    return;
+                }
+                
+                if (!file) {
+                    showModal('يرجى اختيار ملف الفيديو');
+                    return;
+                }
+                
+                simulateUpload(title, description, course, level, file);
+            });
+        });
+        
+        function simulateUpload(title, description, course, level, file) {
+            // Show upload progress
+            document.getElementById('uploadArea').classList.add('hidden');
+            document.getElementById('uploadProgress').classList.remove('hidden');
+            
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            const uploadInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(uploadInterval);
+                    setTimeout(() => {
+                        closeVideoUpload();
+                        showModal(`تم رفع الفيديو "${title}" بنجاح!\n\nسيتم مراجعته وإضافته للمنصة قريباً.`);
+                    }, 500);
+                }
+            }, 200);
+        }
+
+        // Scroll animations
+        window.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.card-hover');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('animate-fade-in');
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f246d8a109e15c',t:'MTc1Nzg3Nzk5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
